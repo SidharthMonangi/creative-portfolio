@@ -4,9 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import Lenis from 'lenis';
-import { ParticleField, webglAvailable } from './particles.js';
 import { initShield } from './shield.js';
 import { initPalette } from './palette.js';
+import { initAssistant } from './assistant.js';
+import { initFlowSim } from './flowsim.js';
+import { initCaseStudies, initPhoto, initTerminal, initKonami } from './extras.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
@@ -49,13 +51,20 @@ document.addEventListener('click', (e) => {
 });
 
 /* ---------------- particles ---------------- */
+// three.js lives in its own chunk, fetched in parallel with the loader animation
 let field = null;
-if (webglAvailable()) {
-  try {
-    field = new ParticleField($('.gl'));
-  } catch (e) { field = null; }
+function hasWebGL() {
+  try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; }
 }
-if (!field) root.classList.add('no-webgl');
+const fieldReady = (async () => {
+  if (!hasWebGL()) { root.classList.add('no-webgl'); return; }
+  try {
+    const { ParticleField } = await import('./particles.js');
+    field = new ParticleField($('.gl'));
+    field.setTheme(root.dataset.theme || 'dark');
+    await field.init();
+  } catch (e) { field = null; root.classList.add('no-webgl'); }
+})();
 
 /* ---------------- theme ---------------- */
 function applyTheme(t, persist = true) {
@@ -161,9 +170,60 @@ if (finePointer && !reduced) {
 }
 
 /* ---------------- palette ---------------- */
+const go = (id) => scrollToTarget(id === '#top' ? document.body : id);
+
+/* ---------------- lab tabs ---------------- */
+let flowSim = null;
+let labInView = false;
+const tabs = $$('.lab__tabs [role="tab"]');
+function openLabTab(name) {
+  tabs.forEach((t) => {
+    const on = t.dataset.tab === name;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+    $(`#${t.getAttribute('aria-controls')}`).hidden = !on;
+  });
+  if (name === 'flow' && labInView) flowSim?.start(); else flowSim?.stop();
+  const panel = $(`#panel-${name}`);
+  gsap.fromTo(panel, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' });
+  ScrollTrigger.refresh();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => openLabTab(t.dataset.tab));
+  t.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault(); e.stopPropagation();
+    const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+    n.focus(); openLabTab(n.dataset.tab);
+  });
+});
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-lab-tab]');
+  if (a) openLabTab(a.dataset.labTab);
+});
+flowSim = initFlowSim($('[data-flow]'));
+initAssistant($('[data-assistant]'), {
+  onAttack: () => { if (field) gsap.fromTo(field.uniforms.uScatter, { value: 2.2 }, { value: 0, duration: 1.4, ease: 'power3.out' }); },
+});
+
+/* ---------------- case studies, photo, terminal, konami ---------------- */
+const cases = initCaseStudies({ lenis, go, openLabTab });
+initPhoto();
+const term = initTerminal({ toggleTheme, go, copyEmail: () => copyEmail(), lenis, field: () => field, toast });
+initKonami(() => { if (field) field.spellText('HIRE ME'); toast('↑↑↓↓←→←→BA — cheat code accepted ✦'); });
+
 initPalette({
-  go: (id) => scrollToTarget(id === '#top' ? document.body : id),
-  toggleTheme, copyEmail, lenis,
+  go, toggleTheme, copyEmail, lenis,
+  extra: [
+    { label: 'Open terminal', hint: 'secret', run: () => term.open() },
+    { label: 'Jailbreak my assistant', hint: 'lab', run: () => { go('#lab'); openLabTab('chat'); } },
+    { label: 'Catch a wash-trade (BidirFlow demo)', hint: 'lab', run: () => { go('#lab'); openLabTab('flow'); } },
+    { label: 'Case study: BidirFlow', hint: 'case', run: () => cases.show('bidirflow') },
+    { label: 'Case study: FieldProof', hint: 'case', run: () => cases.show('fieldproof') },
+    { label: 'Case study: PromptShield', hint: 'case', run: () => cases.show('promptshield') },
+    { label: 'Case study: Q-SOC', hint: 'case', run: () => cases.show('qsoc') },
+    { label: 'Case study: RescueSched', hint: 'case', run: () => cases.show('rescuesched') },
+  ],
   toggleMotion: () => {
     if (!field) return toast('Particles unavailable on this device');
     field.hidden = !field.hidden;
@@ -206,9 +266,10 @@ async function runLoader() {
   const count = $('[data-count]'), bar = $('[data-bar]');
   const lines = ['› mounting particle field', '› arming prompt shield', '› caching for offline use', '› syncing journey: kuwait → vellore', '› ready.'];
   const obj = { v: 0 };
-  const fieldReady = field ? field.init() : Promise.resolve();
   const fontsReady = document.fonts?.ready ?? Promise.resolve();
-  const dur = reduced ? 0.4 : 2.1;
+  let seen = false;
+  try { seen = sessionStorage.getItem('sm-seen') === '1'; sessionStorage.setItem('sm-seen', '1'); } catch (e) { /* ignore */ }
+  const dur = reduced ? 0.4 : seen ? 0.6 : 1.4;
   let shown = 0;
   await new Promise((resolve) => {
     gsap.to(obj, {
@@ -236,6 +297,7 @@ async function runLoader() {
   document.body.classList.remove('is-loading');
   lenis.start();
   intro();
+  if (cases.deepLink) setTimeout(() => cases.show(cases.deepLink), 900);
 }
 
 function intro() {
@@ -301,7 +363,13 @@ function setupScroll() {
   gsap.to('.progress i', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
   // velocity → particles
-  if (field) lenis.on('scroll', ({ velocity }) => field.setVelocity(gsap.utils.clamp(-6, 6, velocity * 0.15)));
+  lenis.on('scroll', ({ velocity }) => field?.setVelocity(gsap.utils.clamp(-6, 6, velocity * 0.15)));
+
+  // run the flow simulation only while the lab is on screen
+  ScrollTrigger.create({
+    trigger: '#lab', start: 'top bottom', end: 'bottom top',
+    onToggle: (st) => { labInView = st.isActive; const flowOpen = !$('#panel-flow').hidden; (labInView && flowOpen) ? flowSim?.start() : flowSim?.stop(); },
+  });
 
   // section → particle shape + nav state
   const navLinks = $$('[data-nav]');
@@ -310,7 +378,7 @@ function setupScroll() {
       trigger: sec, start: 'top 55%', end: 'bottom 55%',
       onToggle: (self) => {
         if (!self.isActive) return;
-        field?.morph(sec.dataset.shape);
+        if (field) { field.sectionShape = sec.dataset.shape; field.morph(sec.dataset.shape); }
         const id = sec.id === 'skills' ? 'about' : sec.id;
         navLinks.forEach((a) => a.classList.toggle('is-active', a.dataset.nav === id));
       },
@@ -329,8 +397,10 @@ function setupScroll() {
   // about statement word scrub
   const st = $('[data-scrub-words]');
   if (st) {
-    const split = SplitText.create(st, { type: 'words', wordsClass: 'word' });
-    gsap.to(split.words, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: st, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+    // aria:'none' keeps the words as real, readable text; the dimming is applied only once the
+    // scrub starts, so the resting page never has low-contrast text
+    const split = SplitText.create(st, { type: 'words', wordsClass: 'word', aria: 'none' });
+    gsap.fromTo(split.words, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: 'none', immediateRender: false, scrollTrigger: { trigger: st, start: 'top 98%', end: 'bottom 45%', scrub: true } });
   }
 
   // generic reveals

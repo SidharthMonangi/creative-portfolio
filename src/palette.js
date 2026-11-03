@@ -1,4 +1,4 @@
-export function initPalette({ go, toggleTheme, copyEmail, toggleMotion, lenis }) {
+export function initPalette({ go, toggleTheme, copyEmail, toggleMotion, lenis, extra = [] }) {
   const el = document.querySelector('.palette');
   const input = el.querySelector('.palette__input');
   const list = el.querySelector('.palette__list');
@@ -19,6 +19,7 @@ export function initPalette({ go, toggleTheme, copyEmail, toggleMotion, lenis })
     { label: 'GitHub — SidharthMonangi', hint: 'link', run: () => open('https://github.com/SidharthMonangi', '_blank', 'noopener') },
     { label: 'LinkedIn — sidharth-monangi', hint: 'link', run: () => open('https://linkedin.com/in/sidharth-monangi', '_blank', 'noopener') },
   ];
+  commands.splice(7, 0, ...extra);
   let items = commands, sel = 0, lastFocus = null;
 
   function render() {

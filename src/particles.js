@@ -377,7 +377,48 @@ export class ParticleField {
     gsap.to(this.uniforms.uColB.value, { r: b.r, g: b.g, b: b.b, duration: 0.8 });
   }
 
+  /** temporarily spell arbitrary text, then return to the section's shape */
+  spellText(text, hold = 4.5) {
+    if (!this.shapes) return;
+    const v = this.view();
+    const portrait = v.w < v.h;
+    const w = v.w * (portrait ? 0.9 : 0.7), cw = 1400, ch = 320;
+    const pos = this.sampleCanvas((ctx) => {
+      ctx.font = '800 230px "Inter Tight Variable", "Inter Tight", Arial Black, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(text, cw / 2, ch / 2 + 10);
+    }, cw, ch, w, w * (ch / cw), 0.3);
+    const back = this.shape;
+    this.shapes.__text = { pos, x: 0, y: 0, spin: 0, tilt: 0, swirl: 0, accent: 0.45, alpha: 1 };
+    this.morph('__text', { duration: 1.6, scatter: 2 });
+    clearTimeout(this._spellT);
+    this._spellT = setTimeout(() => this.morph(this.sectionShape || (back === "__text" ? "name" : back), { duration: 2 }), hold * 1000);
+  }
+
   setVelocity(v) { this.velTarget = v; }
+
+  /** drop resolution, then particle count, if the device can't keep up */
+  adapt(dt) {
+    if (this.adapted >= 2) return;
+    this._fr = (this._fr || 0) + 1;
+    this._ft = (this._ft || 0) + dt;
+    if (this._ft < 2500) return;
+    const fps = (this._fr * 1000) / this._ft;
+    this._fr = 0; this._ft = 0;
+    if (this._warm === undefined) { this._warm = true; return; } // skip the first window (loader, shader compile)
+    if (fps < 42) {
+      this.adapted = (this.adapted || 0) + 1;
+      if (this.adapted === 1 && this.renderer.getPixelRatio() > 1) {
+        this.renderer.setPixelRatio(1);
+        this.uniforms.uPixel.value = 1;
+        this.resize(true);
+      } else {
+        this.adapted = 2;
+        this.geo.setDrawRange(0, Math.floor(this.count * 0.55));
+        this.uniforms.uSize.value *= 1.15;
+      }
+    }
+  }
 
   tick(time, dt) {
     const u = this.uniforms;
@@ -387,6 +428,7 @@ export class ParticleField {
     this.spin += ((this.spinTarget || 0) - this.spin) * 0.03;
     if (this.spinTarget) this.points.rotation.y += this.spin * (dt / 1000);
     if (this.hidden) return;
+    this.adapt(dt);
     this.renderer.render(this.scene, this.camera);
   }
 }
