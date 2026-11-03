@@ -342,9 +342,9 @@ function setupScroll() {
 
   // counters
   $$('[data-counter]').forEach((el) => {
-    const end = +el.dataset.counter, suffix = el.dataset.suffix || '';
+    const end = +el.dataset.counter, suffix = el.dataset.suffix || '', dec = +(el.dataset.decimals || 0);
     const o = { v: 0 };
-    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(o, { v: end, duration: 2, ease: 'power3.out', onUpdate: () => { el.textContent = Math.round(o.v) + suffix; } }) });
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(o, { v: end, duration: 2, ease: 'power3.out', onUpdate: () => { el.textContent = o.v.toFixed(dec) + suffix; } }) });
   });
 
   // marquees (scroll-velocity aware)

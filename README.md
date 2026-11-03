@@ -20,7 +20,7 @@ npm run build    # outputs dist/
 ```
 
 ## Résumé
-Drop your PDF at `public/resume.pdf` — the Résumé button appears automatically when the file exists.
+`public/resume.pdf` is generated from `resume/resume.html` (phone number removed). To regenerate after edits, print that page to A4 PDF (e.g. Chrome → Print → Save as PDF, margins: none).
 
 ## Deploy
 Vercel / Netlify: framework “Vite”, build `npm run build`, output `dist`.

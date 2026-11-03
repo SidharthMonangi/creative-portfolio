@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sidharth Monangi — Résumé</title>
+<style>
+  @font-face { font-family: 'Inter Tight'; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: 'Inter Tight'; font-style: italic; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-italic.woff2') format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: 'JB Mono'; src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --ink: #141414; --dim: #5b5b5b; --rule: #d9d6cf; --accent: #d8430f; }
+  html, body { width: 210mm; }
+  body { font: 400 8.9pt/1.38 'Inter Tight', Arial, sans-serif; color: var(--ink); padding: 11mm 13mm 9mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  a { color: inherit; text-decoration: none; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 3.2mm; border-bottom: 1.6pt solid var(--ink); }
+  h1 { font-size: 23pt; font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; }
+  h1 span { color: var(--accent); }
+  .role { font-size: 9.2pt; color: var(--dim); margin-top: 1.4mm; }
+  .contact { text-align: right; white-space: nowrap; font: 400 7.6pt/1.6 'JB Mono', monospace; color: var(--ink); }
+  .contact a:hover { color: var(--accent); }
+
+  section { margin-top: 3.6mm; }
+  h2 { display: flex; align-items: center; gap: 2.4mm; font: 600 7.4pt/1 'JB Mono', monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.8mm; }
+  h2::after { content: ''; flex: 1; height: 0.6pt; background: var(--rule); }
+
+  .entry { margin-bottom: 2.3mm; }
+  .entry:last-child { margin-bottom: 0; }
+  .head { display: grid; grid-template-columns: 1fr auto; column-gap: 4mm; align-items: baseline; }
+  .head .t { font-weight: 700; font-size: 9.4pt; letter-spacing: -0.01em; }
+  .head .t em { font-style: normal; font-weight: 400; color: var(--dim); }
+  .head .d { font: 500 7.6pt 'JB Mono', monospace; color: var(--dim); white-space: nowrap; }
+  .stack { font: 400 7.3pt/1.45 'JB Mono', monospace; color: var(--dim); margin-top: 0.3mm; }
+  .sub { color: var(--dim); margin-top: 0.3mm; }
+
+  ul { list-style: none; margin-top: 0.9mm; }
+  li { position: relative; padding-left: 3.6mm; margin-bottom: 0.55mm; }
+  li::before { content: ''; position: absolute; left: 0.6mm; top: 0.62em; width: 1.3mm; height: 0.75pt; background: var(--accent); }
+  li b { font-weight: 650; }
+
+  .skills { display: grid; grid-template-columns: 30mm 1fr; row-gap: 0.9mm; column-gap: 3mm; }
+  .skills dt { font-weight: 650; }
+  .skills dd { color: #2b2b2b; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 7mm; }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Sidharth Monangi<span>.</span></h1>
+      <p class="role">B.Tech CSE, VIT Vellore · Software, systems &amp; applied AI</p>
+    </div>
+    <div class="contact">
+      <div>Vellore, India · open to relocation</div>
+      <div><a href="mailto:sidharthmonangi@gmail.com">sidharthmonangi@gmail.com</a></div>
+      <div><a href="https://linkedin.com/in/sidharth-monangi">linkedin.com/in/sidharth-monangi</a></div>
+      <div><a href="https://github.com/SidharthMonangi">github.com/SidharthMonangi</a></div>
+      <div><a href="https://sidharthmonangi.github.io">sidharthmonangi.github.io</a></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="head"><span class="t">Vellore Institute of Technology (VIT), Vellore <em>· B.Tech, Computer Science and Engineering</em></span><span class="d">2023 – 2027</span></div>
+      <p class="sub">CGPA 7.8 / 10 · Coursework: Data Structures &amp; Algorithms, Operating Systems, Compiler Design, Computer Architecture, Parallel Computing</p>
+    </div>
+    <div class="entry">
+      <div class="head"><span class="t">FAIPS Delhi Public School, Kuwait <em>· Class XII: 87% · Class X: 95%</em></span><span class="d">2023</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+    <dl class="skills">
+      <dt>Languages</dt><dd>Python, Java, C, C++, JavaScript (ES6+), TypeScript, SQL, Verilog, HTML5, CSS3</dd>
+      <dt>Backend &amp; Cloud</dt><dd>REST APIs, Node.js, FastAPI, Flask, Spring Boot, Cloudflare Workers, D1, R2, Vercel, Supabase, Firebase, CI/CD</dd>
+      <dt>Frontend</dt><dd>React, Vite, Tailwind CSS, IndexedDB, offline-first sync</dd>
+      <dt>AI / ML</dt><dd>Transfer learning (MobileNetV3), Random Forest, LLM APIs (Gemini, Groq), RAG, LLM-as-judge evaluation, Ollama, Qiskit</dd>
+      <dt>Systems &amp; Data</dt><dd>Streaming algorithms (Count-Min Sketch), CPU-GPU scheduling, FPGA, MySQL, SQLite, Linux, Git</dd>
+      <dt>Security</dt><dd>OWASP Top 10, OWASP ASVS, OWASP LLM Top 10, prompt-injection testing, post-quantum cryptography</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="entry">
+      <div class="head"><span class="t">BidirFlow <em>· Real-time wash-trading detection</em></span><span class="d">Oct 2026</span></div>
+      <p class="stack">Python · Verilog · FPGA</p>
+      <ul>
+        <li>Built a streaming detector that flags wash trading, layering and circular trading rings on live Ethereum transfers in constant <b>32 MiB</b> memory at <b>213,000 transfers/s</b> (10,800× real time); patent application in preparation.</li>
+        <li>Achieved <b>0.963 average precision</b> on 849,118 real transfers ($61B) vs. 0.009 for a Count-Min volume baseline; held up on held-out and pre-registered windows (0.90, 0.94) and on Polygon (0.95).</li>
+        <li>Implemented the sketch core in Verilog, verified it bit for bit against the Python model, and placed and routed it on a Lattice ECP5 FPGA at <b>77.6 MHz</b>.</li>
+        <li>Shipped a live dashboard answering natural-language queries via a local LLM (Ollama) that calls detector tools.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="head"><span class="t">FieldProof <em>· Offline-first field-evidence platform</em></span><span class="d">Oct 2026</span></div>
+      <p class="stack">React · TypeScript · Cloudflare Workers · D1 · R2</p>
+      <ul>
+        <li>Deployed a fieldwork app (cases, visits, uploads, role-based review) on a serverless edge backend with server-side RBAC.</li>
+        <li>Designed offline IndexedDB drafts with duplicate-safe sync (operation IDs, version checks) and a cited Gemini assistant.</li>
+        <li>Ran an OWASP Top 10 / ASVS L1 review of 20 API routes (Semgrep, gitleaks); fixed 10 of 15 findings, cutting critical advisories from 1 to 0; verified by <b>90 automated tests</b> in CI.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="head"><span class="t">PromptShield <em>· Prompt-injection tester for LLM chatbots</em></span><span class="d">Oct 2026</span></div>
+      <p class="stack">React · Vercel · Groq · Supabase</p>
+      <ul>
+        <li>Built solo for LovHack Season 3: runs <b>25 attacks in 5 categories</b>, scores leaks with canary tokens and an LLM judge, then rewrites defenses and reruns the suite.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Research &amp; Publications</h2>
+    <div class="entry">
+      <div class="head"><span class="t">Q-SOC <em>· Quantum-aware SOC · co-author, IEEE paper under submission</em></span><span class="d">2026</span></div>
+      <p class="stack">Python · FastAPI · Qiskit</p>
+      <ul>
+        <li>Co-built a SOC with a rule engine (17 rules, MITRE ATT&amp;CK tags), attack simulator, Quantum Readiness Index, Qiskit Grover/Shor demos and ML-DSA-65 post-quantum report signing.</li>
+        <li>Validated detection with <b>220/220</b> passing runs across 11 scenarios and a 33/33 negative control; raised ingestion from 35 to <b>1,526 events/s</b> by batching.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="head"><span class="t">RescueSched <em>· CPU-GPU inference scheduling · first author</em></span><span class="d">2026 – 2027</span></div>
+      <p class="stack">Python · Flask · MobileNetV3</p>
+      <ul>
+        <li>Designed a disaster-image scheduler that re-prioritizes queued requests by hazard severity from a fine-tuned MobileNetV3.</li>
+        <li>Predicts runtimes with a random forest and picks CPU or GPU and batch size (1 to 64) by a deadline-weighted cost.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Certifications &amp; Achievements</h2>
+    <ul>
+      <li>Oracle OCI Certified AI Foundations Associate; OCI Certified Foundations Associate; GitHub Foundations (2026)</li>
+      <li>Booking Holdings HackCellence 2026: shortlisted for Round 2 of a national hiring hackathon; hackathon team lead since 2024</li>
+      <li>Football captain: interschool title (Class XII), college tournament win; House Captain, DPS Kuwait</li>
+    </ul>
+  </section>
+</body>
+</html>

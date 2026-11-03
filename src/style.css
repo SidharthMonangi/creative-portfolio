@@ -447,3 +447,21 @@ body.has-cursor .cursor { display: block; }
 :root[data-theme='light'] .project__tag,
 :root[data-theme='light'] .project__meta span:first-child { color: color-mix(in srgb, var(--accent) 55%, #000); }
 :root[data-theme='light'] .canary { color: #4f6b00; }
+
+/* ---- BidirFlow visual ---- */
+.vis-flow { flex-direction: column; }
+.flow { width: min(360px, 80%); position: relative; z-index: 1; overflow: visible; }
+.flow__edges path { fill: none; stroke: color-mix(in srgb, var(--fg) 28%, transparent); stroke-width: 1.2; stroke-dasharray: 4 5; animation: dash 3s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -36; } }
+.flow__ring { fill: color-mix(in srgb, var(--accent) 12%, transparent); stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; animation: ringpulse 2.4s ease-in-out infinite; }
+@keyframes ringpulse { 50% { fill: color-mix(in srgb, var(--accent) 26%, transparent); } }
+.flow__nodes circle { fill: color-mix(in srgb, var(--bg) 85%, #000); stroke: color-mix(in srgb, var(--fg) 60%, transparent); stroke-width: 1.5; }
+.flow__nodes circle.hot { stroke: var(--accent); fill: var(--accent); }
+.flow__pkt { fill: var(--fg); filter: drop-shadow(0 0 6px var(--accent)); }
+.flow__alert { position: relative; z-index: 1; margin-top: 18px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 99px; border: 1px solid var(--accent); color: var(--accent); font-size: 10px; background: color-mix(in srgb, var(--bg) 80%, transparent); }
+.flow__alert i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 1.2s infinite; }
+.cv-btn { font-size: 11px; padding: 9px 14px; border: 1px solid currentColor; border-radius: 999px; transition: background-color .3s, color .3s; }
+.cv-btn:hover { background: #f1ede4; color: #0b0b0c; }
+:root[data-theme='light'] .cv-btn:hover { background: var(--fg); color: var(--bg); }
+.mobile-menu__foot a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 420px) { .cv-btn { padding: 8px 10px; font-size: 10px; } }

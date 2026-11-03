@@ -12,6 +12,7 @@ export function initPalette({ go, toggleTheme, copyEmail, toggleMotion, lenis })
     { label: 'Contact', hint: 'nav', run: () => go('#contact') },
     { label: 'Toggle light / dark theme', hint: 'action', run: toggleTheme },
     { label: 'Copy email address', hint: 'action', run: copyEmail },
+    { label: 'Download résumé (PDF)', hint: 'file', run: () => open('./resume.pdf', '_blank', 'noopener') },
     { label: 'Pause / resume particles', hint: 'action', run: toggleMotion },
     { label: 'Open FieldProof (live)', hint: 'link', run: () => open('https://fieldproof-vercel.vercel.app/', '_blank', 'noopener') },
     { label: 'Open PromptShield (live)', hint: 'link', run: () => open('https://promptshield-drab.vercel.app/', '_blank', 'noopener') },
