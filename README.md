@@ -22,6 +22,8 @@ npm run dev      # local dev (assistant runs in its in-browser mode)
 npm run build    # outputs dist/
 ```
 
+**Live:** https://sidharth-monangi.vercel.app
+
 ## Deploy (Vercel — recommended, enables the live AI assistant)
 1. Import the repo at vercel.com/new (framework: Vite; build `npm run build`; output `dist`).
 2. Project → Settings → Environment Variables: add `GROQ_API_KEY` (free at console.groq.com). Optional: `GROQ_MODEL` (default `llama-3.1-8b-instant`), `ASSISTANT_CANARY`.
