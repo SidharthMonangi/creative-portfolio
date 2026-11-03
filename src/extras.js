@@ -38,8 +38,11 @@ export function initCaseStudies({ lenis, go, openLabTab }) {
     (c.shots || []).filter((n) => available.has(n)).forEach((name) => {
       const img = new Image();
       img.alt = `${c.title} screenshot`;
-      img.loading = 'lazy';
-      img.onload = () => { wrap.appendChild(img); wrap.classList.add('has-shots'); };
+      img.decoding = 'async';
+      // justified row: each image's flex-grow is its aspect ratio, so heights match
+      img.onload = () => { img.style.flex = `${img.naturalWidth / img.naturalHeight} 1 0`; wrap.appendChild(img); wrap.classList.add('has-shots'); };
+      img.title = 'Open full size';
+      img.addEventListener('click', () => open(img.src, '_blank', 'noopener'));
       img.src = `./shots/${name}`;
     });
     const d = body.querySelector('[data-case-demo]');

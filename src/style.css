@@ -591,3 +591,7 @@ body.has-cursor .cursor { display: block; }
   .project__desc { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 }
 .lab__tabs button[aria-selected='true'] span { color: inherit; opacity: .65; }
+.case__shots.has-shots { display: flex; gap: 12px; align-items: flex-start; }
+.case__shots img { min-width: 0; height: auto; }
+@media (max-width: 640px) { .case__shots.has-shots { flex-wrap: wrap; } .case__shots img { flex-basis: 100% !important; } }
+.case__shots img { cursor: zoom-in; transition: transform .4s var(--ease), border-color .3s; } .case__shots img:hover { transform: translateY(-3px); border-color: var(--accent); }
